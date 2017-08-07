@@ -1,3 +1,3 @@
 export { default as Feed } from './Feed';
-export { default as More } from './More';
+export { default as About } from './About';
 export { default as PrayerTimes } from './PrayerTimes';
