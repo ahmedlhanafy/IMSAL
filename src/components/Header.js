@@ -7,11 +7,11 @@ export default ({ title }) =>
     <View style={{ height: 22 }} />
     <Text
       style={{
-        padding: 20,
+        paddingVertical: 20,
         fontWeight: 'bold',
         fontSize: 34,
         letterSpacing: -0.0824242,
-        color: '#000000'
+        color: '#000000',
       }}
     >
       {title}
