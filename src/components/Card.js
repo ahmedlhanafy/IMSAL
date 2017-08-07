@@ -21,7 +21,7 @@ export default ({ imageUrl, title, desc, createdAt }) =>
       <Text style={styles.createAt}>
         {createdAt}
       </Text>
-      <Text numberOfLines={3} style={styles.desc}>
+      <Text numberOfLines={2} style={styles.desc}>
         {desc}
       </Text>
     </View>
@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
   createAt: {
     fontWeight: '300',
     color: 'grey',
-    fontSize: 15,
+    fontSize: 14,
     marginBottom: 8,
   },
-  textsWrapper: { padding: 8, paddingBottom: 16 },
+  textsWrapper: { padding: 12, paddingBottom: 16 },
   desc: { fontWeight: '400', color: 'black', fontSize: 15 },
 });
