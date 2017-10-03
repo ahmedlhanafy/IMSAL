@@ -6,8 +6,7 @@ import { Header, TabBarIcon } from '../components';
 
 export default class About extends Component {
   static navigationOptions = {
-    tabBarIcon: ({ tintColor }) =>
-      <TabBarIcon name="ios-menu" color={tintColor} />,
+    tabBarIcon: ({ tintColor }) => <TabBarIcon name="menu" color={tintColor} />,
   };
 
   render() {

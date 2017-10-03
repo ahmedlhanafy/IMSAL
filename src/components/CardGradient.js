@@ -8,7 +8,7 @@ export default ({ imageUrl, title, desc, createdAt, isLoading }) =>
     {isLoading &&
       <ImageBackground
         source={require('../../imgs/placeholder.png')}
-        resizeMode="cover"
+        resizeMode="contain"
         style={{
           position: 'absolute',
           left: 0,
@@ -54,6 +54,7 @@ export default ({ imageUrl, title, desc, createdAt, isLoading }) =>
       </ImageBackground>}
     {!isLoading &&
       <ImageBackground
+        borderRadius={8}
         resizeMode="cover"
         style={styles.image}
         source={{
@@ -82,14 +83,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     backgroundColor: 'white',
     borderRadius: 8,
-    width: '100%',
-    marginBottom: 24,
     height: 280,
+    elevation: 8,
+    margin: 12,
   },
   image: {
-    borderRadius: 8,
     height: '100%',
-    overflow: 'hidden',
   },
   textsWrapper: {
     position: 'absolute',
@@ -99,6 +98,7 @@ const styles = StyleSheet.create({
     padding: 12,
     paddingBottom: 16,
     backgroundColor: 'transparent',
+    borderRadius: 8,
   },
   title: {
     fontWeight: '600',

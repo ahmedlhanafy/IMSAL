@@ -13,7 +13,7 @@ const data = [
             consectetur sit ex ex. Elit culpa laboris officia sint aliqua
             est deserunt. Et quis ipsum sint laboris.`,
     imageUrl:
-      'https://cdn.pixabay.com/photo/2015/02/18/11/50/mountain-landscape-640617_1280.jpg',
+      'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg',
     title: 'IMSAL Nature Walk (August 2017)',
   },
   {
@@ -24,7 +24,7 @@ const data = [
             consectetur sit ex ex. Elit culpa laboris officia sint aliqua
             est deserunt. Et quis ipsum sint laboris.`,
     imageUrl:
-      'https://cdn.pixabay.com/photo/2015/09/02/12/36/startrails-918551_1280.jpg',
+      'https://static.pexels.com/photos/36478/amazing-beautiful-beauty-blue.jpg',
     title: 'Welcoming Evening 2017',
   },
   {
@@ -35,7 +35,7 @@ const data = [
                 consectetur sit ex ex. Elit culpa laboris officia sint aliqua
                 est deserunt. Et quis ipsum sint laboris.`,
     imageUrl:
-      'https://images.unsplash.com/39/wdXqHcTwSTmLuKOGz92L_Landscape.jpg',
+      'https://static.pexels.com/photos/440731/pexels-photo-440731.jpeg',
     title: "Sisters' Study Circle",
   },
   {
@@ -46,7 +46,7 @@ const data = [
                 consectetur sit ex ex. Elit culpa laboris officia sint aliqua
                 est deserunt. Et quis ipsum sint laboris.`,
     imageUrl:
-      'https://cdn.pixabay.com/photo/2014/07/27/20/29/landscape-403165_1280.jpg',
+      'https://static.pexels.com/photos/131723/pexels-photo-131723.jpeg',
     title: 'Trip to Luxembourg - 2017',
   },
 ];
@@ -54,7 +54,7 @@ const data = [
 export default class Feed extends Component {
   static navigationOptions = {
     tabBarIcon: ({ tintColor }) =>
-      <TabBarIcon name="ios-paper-outline" color={tintColor} />,
+      <TabBarIcon name="paper" color={tintColor} />,
   };
   state = {
     isLoading: true,
@@ -63,7 +63,7 @@ export default class Feed extends Component {
     setTimeout(() => {
       this.setState({ isLoading: false });
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }, 3000);
+    }, 400);
   }
   render() {
     const { isLoading } = this.state;
@@ -71,18 +71,14 @@ export default class Feed extends Component {
     return (
       <View style={{ flex: 1 }}>
         {isLoading &&
-          <View style={{ marginHorizontal: 20 }}>
+          <View style={{ alignItems: 'center' }}>
             <Header title="Feed" />
             <CardGradient isLoading />
             <CardGradient isLoading />
             <CardGradient isLoading />
           </View>}
         {!isLoading &&
-          <ScrollView
-            contentContainerStyle={{
-              marginHorizontal: 20,
-            }}
-          >
+          <ScrollView contentContainerStyle={{}}>
             <Header title="Feed" />
             {cards}
           </ScrollView>}
