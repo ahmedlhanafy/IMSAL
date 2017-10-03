@@ -8,34 +8,7 @@ import color from 'color';
 import { Feed, About, PrayerTimes } from './screens';
 import { Inactive, TabBarBackground, Primary } from './config/Colors';
 
-const MyApp = TabNavigator(
-  {
-    Feed: {
-      screen: Feed,
-    },
-    PrayerTimes: {
-      screen: PrayerTimes,
-    },
-    About: {
-      screen: About,
-    },
-  },
-  {
-    tabBarComponent: NavigationComponent,
-    tabBarPosition: 'bottom',
-    tabBarOptions: {
-      bottomNavigationOptions: {
-        activeLabelColor: 'white',
-        labelColor: 'white',
-        rippleColor: 'white',
-        shifting: true,
-        backgroundColor: TabBarBackground,
-      },
-    },
-  }
-);
-
-// const App = TabNavigator(
+// const MyApp = TabNavigator(
 //   {
 //     Feed: {
 //       screen: Feed,
@@ -51,24 +24,45 @@ const MyApp = TabNavigator(
 //     tabBarComponent: NavigationComponent,
 //     tabBarPosition: 'bottom',
 //     tabBarOptions: {
-//       activeTintColor: Primary,
-//       inactiveTintColor: Inactive,
 //       bottomNavigationOptions: {
-//         backgroundColor: TabBarBackground,
+//         activeLabelColor: 'white',
 //         labelColor: 'white',
+//         rippleColor: 'white',
+//         shifting: true,
+//         backgroundColor: TabBarBackground,
 //       },
-//       lazy: true,
-//       // showLabel: false,
-//       showIcon: true,
-//       indicatorStyle: { backgroundColor: Primary },
 //     },
 //   }
 // );
 
+const MyApp = TabNavigator(
+  {
+    Feed: {
+      screen: Feed,
+    },
+    PrayerTimes: {
+      screen: PrayerTimes,
+    },
+    About: {
+      screen: About,
+    },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: Primary,
+      inactiveTintColor: Inactive,
+      style: {
+        backgroundColor: TabBarBackground,
+      },
+      lazy: true,
+      showLabel: false,
+      showIcon: true,
+    },
+  }
+);
+
 export default () =>
   <View style={{ flex: 1 }}>
     <StatusBar backgroundColor={color(TabBarBackground).darken(0.4).rgb()} />
-    <View style={{ flex: 1 }}>
-      <MyApp />
-    </View>
+    <MyApp />
   </View>;

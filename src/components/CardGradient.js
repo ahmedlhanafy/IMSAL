@@ -3,21 +3,26 @@ import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 
-export default ({ imageUrl, title, desc, createdAt, isLoading }) =>
+export default ({
+  imageUrl,
+  title,
+  desc,
+  createdAt,
+  isLoading,
+}: {
+  imageUrl: string,
+  title: string,
+  desc: string,
+  createdAt: string,
+  isLoading: boolean,
+}) =>
   <View style={styles.container}>
     {isLoading &&
       <ImageBackground
         source={require('../../imgs/placeholder.png')}
-        resizeMode="contain"
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          top: 0,
-          borderRadius: 8,
-          overflow: 'hidden',
-        }}
+        borderRadius={8}
+        resizeMode="cover"
+        style={styles.image}
       >
         <View
           style={{

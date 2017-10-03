@@ -6,7 +6,7 @@ import { Header, TabBarIcon, Card } from '../components';
 
 export default class Feed extends Component {
   static navigationOptions = {
-    tabBarIcon: ({ tintColor }) => <TabBarIcon name="time" />,
+    tabBarIcon: ({ tintColor }) => <TabBarIcon color={tintColor} name="time" />,
   };
 
   render() {

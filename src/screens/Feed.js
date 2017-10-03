@@ -1,7 +1,7 @@
 /* @flow */
 
 import React, { Component } from 'react';
-import { View, ScrollView, LayoutAnimation } from 'react-native';
+import { View, ScrollView, LayoutAnimation, Animated } from 'react-native';
 import { Header, TabBarIcon, CardGradient } from '../components';
 
 const data = [
@@ -58,28 +58,51 @@ export default class Feed extends Component {
   };
   state = {
     isLoading: true,
+    toolbarAnimation: new Animated.Value(0),
   };
   componentDidMount() {
     setTimeout(() => {
       this.setState({ isLoading: false });
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }, 400);
+    }, 5000);
   }
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, toolbarAnimation } = this.state;
     const cards = data.map((c, i) => <CardGradient key={i} {...c} />);
     return (
-      <View style={{ flex: 1 }}>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        <Header
+          style={{ zIndex: 1 }}
+          animation={toolbarAnimation}
+          title="Feed"
+        />
         {isLoading &&
-          <View style={{ alignItems: 'center' }}>
-            <Header title="Feed" />
-            <CardGradient isLoading />
+          <View style={{ paddingTop: 92 + 22 }}>
+            <CardGradient
+              imageUrl="https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg"
+              isLoading
+            />
             <CardGradient isLoading />
             <CardGradient isLoading />
           </View>}
         {!isLoading &&
-          <ScrollView contentContainerStyle={{}}>
-            <Header title="Feed" />
+          <ScrollView
+            onScroll={Animated.event([
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    y: toolbarAnimation,
+                  },
+                },
+              },
+            ])}
+            contentContainerStyle={{ paddingTop: 92 + 22 }}
+            scrollEventThrottle={16}
+          >
             {cards}
           </ScrollView>}
       </View>
