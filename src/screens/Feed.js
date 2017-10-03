@@ -1,55 +1,15 @@
 /* @flow */
 
 import React, { Component } from 'react';
-import { View, ScrollView, LayoutAnimation, Animated } from 'react-native';
-import { Header, TabBarIcon, CardGradient } from '../components';
-
-const data = [
-  {
-    createdAt: '2 mins ago',
-    desc: `Consectetur labore ea nostrud exercitation labore do ut occaecat
-            ullamco et. Labore occaecat sunt mollit adipisicing amet mollit
-            consequat occaecat laboris. Labore veniam eu eiusmod deserunt
-            consectetur sit ex ex. Elit culpa laboris officia sint aliqua
-            est deserunt. Et quis ipsum sint laboris.`,
-    imageUrl:
-      'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg',
-    title: 'IMSAL Nature Walk (August 2017)',
-  },
-  {
-    createdAt: '2 days ago',
-    desc: `Consectetur labore ea nostrud exercitation labore do ut occaecat
-            ullamco et. Labore occaecat sunt mollit adipisicing amet mollit
-            consequat occaecat laboris. Labore veniam eu eiusmod deserunt
-            consectetur sit ex ex. Elit culpa laboris officia sint aliqua
-            est deserunt. Et quis ipsum sint laboris.`,
-    imageUrl:
-      'https://static.pexels.com/photos/36478/amazing-beautiful-beauty-blue.jpg',
-    title: 'Welcoming Evening 2017',
-  },
-  {
-    createdAt: '7 days ago',
-    desc: `Consectetur labore ea nostrud exercitation labore do ut occaecat
-                ullamco et. Labore occaecat sunt mollit adipisicing amet mollit
-                consequat occaecat laboris. Labore veniam eu eiusmod deserunt
-                consectetur sit ex ex. Elit culpa laboris officia sint aliqua
-                est deserunt. Et quis ipsum sint laboris.`,
-    imageUrl:
-      'https://static.pexels.com/photos/440731/pexels-photo-440731.jpeg',
-    title: "Sisters' Study Circle",
-  },
-  {
-    createdAt: '1 week ago',
-    desc: `Consectetur labore ea nostrud exercitation labore do ut occaecat
-                ullamco et. Labore occaecat sunt mollit adipisicing amet mollit
-                consequat occaecat laboris. Labore veniam eu eiusmod deserunt
-                consectetur sit ex ex. Elit culpa laboris officia sint aliqua
-                est deserunt. Et quis ipsum sint laboris.`,
-    imageUrl:
-      'https://static.pexels.com/photos/131723/pexels-photo-131723.jpeg',
-    title: 'Trip to Luxembourg - 2017',
-  },
-];
+import {
+  View,
+  LayoutAnimation,
+  Animated,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
+import { Header, TabBarIcon, Card } from '../components';
+import { Post } from '../types';
 
 export default class Feed extends Component {
   static navigationOptions = {
@@ -59,38 +19,72 @@ export default class Feed extends Component {
   state = {
     isLoading: true,
     toolbarAnimation: new Animated.Value(0),
+    data: [],
   };
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ isLoading: false });
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }, 5000);
+  async componentDidMount() {
+    try {
+      const data = await this._fetchPage(this._pageNumber);
+      this.setState({ isLoading: false, data }, () => {
+        this._pageNumber++;
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      });
+    } catch (e) {
+      // @todo: Add nice illustration with lottie
+    }
   }
+
+  _pageNumber = 1;
+  _fetchPage = async (pageNumber: number = 1): Array<Post> => {
+    const res = await fetch(
+      `https://www.imsal.be/wp-content/themes/attitude-child/imsalAppTokens.php?AppFeed=1&page=${pageNumber}`
+    );
+    return await res.json();
+  };
+
+  _loadMore = async () => {
+    try {
+      const data = await this._fetchPage(this._pageNumber);
+      if (data.length > 0) {
+        this.setState({ data: [...this.state.data, ...data] }, () => {
+          this._pageNumber++;
+        });
+      }
+    } catch (e) {
+      // Do nothing
+    }
+  };
+
+  _renderItem = ({ item }: { item: Post }) =>
+    <Card
+      imageUrl={item.img}
+      title={item.title}
+      type={item.type}
+      url={item.url}
+      createdAt={item.created_at}
+    />;
+  _keyExtractor = (_, index) => index;
+
   render() {
-    const { isLoading, toolbarAnimation } = this.state;
-    const cards = data.map((c, i) => <CardGradient key={i} {...c} />);
+    const { isLoading, toolbarAnimation, data } = this.state;
+
     return (
-      <View
-        style={{
-          flex: 1,
-        }}
-      >
+      <View style={styles.container}>
         <Header
-          style={{ zIndex: 1 }}
+          style={styles.header}
           animation={toolbarAnimation}
           title="Feed"
         />
         {isLoading &&
-          <View style={{ paddingTop: 92 + 22 }}>
-            <CardGradient
-              imageUrl="https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg"
-              isLoading
-            />
-            <CardGradient isLoading />
-            <CardGradient isLoading />
+          <View style={styles.list}>
+            <Card isLoading />
+            <Card isLoading />
+            <Card isLoading />
           </View>}
         {!isLoading &&
-          <ScrollView
+          <FlatList
+            data={data}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
             onScroll={Animated.event([
               {
                 nativeEvent: {
@@ -100,12 +94,17 @@ export default class Feed extends Component {
                 },
               },
             ])}
-            contentContainerStyle={{ paddingTop: 92 + 22 }}
+            contentContainerStyle={styles.list}
             scrollEventThrottle={16}
-          >
-            {cards}
-          </ScrollView>}
+            onEndReached={this._loadMore}
+          />}
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  header: { zIndex: 1 },
+  list: { paddingTop: 92 + 22 },
+});
