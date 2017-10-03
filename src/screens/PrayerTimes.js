@@ -10,6 +10,10 @@ export default class Feed extends Component {
   };
 
   render() {
-    return <View style={{ flex: 1 }} />;
+    return (
+      <View style={{ flex: 1 }}>
+        <Header title="Prayer Times" />
+      </View>
+    );
   }
 }

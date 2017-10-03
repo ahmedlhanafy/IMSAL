@@ -22,7 +22,7 @@ export default ({
                 inputRange: [20, 80],
                 outputRange: [0, 1],
               })
-            : 1,
+            : 0,
         },
       ]}
     >
